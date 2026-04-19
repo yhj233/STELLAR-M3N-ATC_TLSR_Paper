@@ -1,5 +1,5 @@
 # TL;DR
-修改了epd_bw_213_ice.c 兼容STELLAR M3N 耗电还行走时正常
+修改了epd_bw_213_ice.c 兼容STELLAR M3N 耗电还行走时正常,图片上传正常
 > **Warning** <br>
 > This firmweare may include high battery usage.
 
