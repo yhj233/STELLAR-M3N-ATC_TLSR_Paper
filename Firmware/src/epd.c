@@ -19,6 +19,7 @@ extern const uint8_t ucMirror[];
 #include "font_60.h"
 #include "font16.h"
 #include "font30.h"
+#include "font_bold.h"
 
 RAM uint8_t epd_model = 0; // 0 = Undetected, 1 = BW213, 2 = BWR213, 3 = BWR154, 4 = BW213ICE, 5 BWR296
 const char *epd_model_string[] = {"NC", "BW213", "BWR213", "BWR154", "213ICE", "BWR296"};
@@ -246,6 +247,9 @@ _attribute_ram_code_ void epd_display_tiff(uint8_t *pData, int iSize)
 {
     // test G4 decoder
     epd_clear();
+ // EPD_Display(epd_buffer, NULL, epd_buffer_size, 1);  // 强制全刷（含红色清零）
+ //   WaitMs(500);  // 等待清屏完成，可根据实际减少
+
     TIFF_openRAW(&tiff, 250, 122, BITDIR_MSB_FIRST, pData, iSize, TIFFDraw);
     TIFF_setDrawParameters(&tiff, 65536, TIFF_PIXEL_1BPP, 0, 0, 250, 122, NULL);
     TIFF_decode(&tiff);
@@ -387,15 +391,15 @@ void epd_display_time_with_date(struct date_time _time, uint16_t battery_mv, int
 
     //sprintf(buff, "ESL_%02X%02X%02X", mac_public[2], mac_public[1], mac_public[0]);
     sprintf(buff, " %dmV", battery_mv);
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 1, 17, (char *)buff, 1);
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_bold_16, 1, 17, (char *)buff, 1);
    
-    obdRectangle(&obd, 192, 10, 209, 14, 1, 1);
-    obdRectangle(&obd, 195, 2, 249, 22, 1, 1);
+ //   obdRectangle(&obd, 192, 10, 209, 14, 1, 1);
+  //  obdRectangle(&obd, 195, 2, 249, 22, 1, 1);
 
-    sprintf(buff, "%d%%", battery_level);
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 199, 18, (char *)buff, 0);
+//    sprintf(buff, "%d%%", battery_level);
+ //   obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 199, 18, (char *)buff, 0);
 
-    obdRectangle(&obd, 0, 25, 249, 27, 1, 1);
+//    obdRectangle(&obd, 0, 25, 249, 27, 1, 1);
 
     sprintf(buff, "%02d:%02d", _time.tm_hour, _time.tm_min);
     obdWriteStringCustom(&obd, (GFXfont *)&DSEG14_Classic_Mini_Regular_40, 10, 82, (char *)buff, 1);
@@ -412,13 +416,13 @@ void epd_display_time_with_date(struct date_time _time, uint16_t battery_mv, int
     else {
         sprintf(buff, "(-w-)");
     }
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 178, 116, (char *)buff, 1);
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_bold_16, 180, 116, (char *)buff, 1);
 
-    obdRectangle(&obd, 168, 27, 170, 99, 1, 1);
-    obdRectangle(&obd, 0, 97, 249, 99, 1, 1);
+   // obdRectangle(&obd, 168, 27, 170, 99, 1, 1);
+  //  obdRectangle(&obd, 0, 97, 249, 99, 1, 1);
 
     sprintf(buff, "%d-%02d-%02d", _time.tm_year, _time.tm_month, _time.tm_day);
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 1, 118, (char *)buff, 1);
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_bold_16, 6, 118, (char *)buff, 1);
 
     FixBuffer(epd_temp, epd_buffer, epd_width, epd_height);
 
